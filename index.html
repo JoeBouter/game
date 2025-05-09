@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>3D Driving Game</title>
+    <style>
+        body { margin: 0; overflow: hidden; }
+        canvas { display: block; }
+        #hud {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            color: white;
+            font-family: Arial;
+            font-size: 20px;
+            text-shadow: 1px 1px 2px black;
+        }
+    </style>
+</head>
+<body>
+    <div id="hud">
+        Speed: <span id="speed">0</span> km/h<br>
+        Score: <span id="score">0</span>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // Set up scene
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setClearColor(0x333333);
+        document.body.appendChild(renderer.domElement);
+
+        // Create player car
+        const playerCar = new THREE.Mesh(
+            new THREE.BoxGeometry(1, 0.5, 2),
+            new THREE.MeshStandardMaterial({ color: 0x00aa00 })
+        );
+        playerCar.position.z = 1;
+        scene.add(playerCar);
+
+        // Create road
+        const roadGeometry = new THREE.PlaneGeometry(100, 8);
+        const roadMaterial = new THREE.MeshStandardMaterial({ color: 0x444444 });
+        const road = new THREE.Mesh(roadGeometry, roadMaterial);
+        road.rotation.x = -Math.PI / 2;
+        road.position.y = -0.5;
+        scene.add(road);
+
+        // Add road markings
+        for (let i = -50; i < 50; i += 2) {
+            const line = new THREE.Mesh(
+                new THREE.PlaneGeometry(0.5, 0.2),
+                new THREE.MeshStandardMaterial({ color: 0xffffff })
+            );
+            line.rotation.x = -Math.PI / 2;
+            line.position.set(0, -0.45, i);
+            scene.add(line);
+        }
+
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(ambientLight);
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+        directionalLight.position.set(0, 10, 0);
+        scene.add(directionalLight);
+
+        // Camera setup
+        camera.position.set(0, 3, 5);
+        camera.lookAt(0, 0, 0);
+
+        // Game variables
+        const cars = [];
+        let speed = 0;
+        let score = 0;
+        let gameActive = true;
+        const keys = {
+            ArrowLeft: false,
+            ArrowRight: false,
+            ArrowUp: false,
+            ArrowDown: false
+        };
+
+        // Event listeners
+        document.addEventListener('keydown', (e) => keys[e.key] = true);
+        document.addEventListener('keyup', (e) => keys[e.key] = false);
+
+        function spawnCar() {
+            const colors = [0xff0000, 0x0000ff, 0xffff00, 0xff00ff];
+            const car = new THREE.Mesh(
+                new THREE.BoxGeometry(1, 0.5, 2),
+                new THREE.MeshStandardMaterial({ 
+                    color: colors[Math.floor(Math.random() * colors.length)] 
+                })
+            );
+            car.position.x = Math.random() * 6 - 3;
+            car.position.z = -50;
+            scene.add(car);
+            cars.push(car);
+        }
+
+        function updatePlayer(delta) {
+            // Handle controls
+            if (keys.ArrowLeft) playerCar.position.x = Math.max(-3, playerCar.position.x - 5 * delta);
+            if (keys.ArrowRight) playerCar.position.x = Math.min(3, playerCar.position.x + 5 * delta);
+            
+            // Speed control
+            speed = keys.ArrowUp ? Math.min(100, speed + 20 * delta) : 
+                   keys.ArrowDown ? Math.max(0, speed - 30 * delta) : 
+                   Math.max(0, speed - 5 * delta);
+            
+            // Move road and cars
+            road.position.z += speed * delta;
+            
+            // Update cars
+            for (let i = cars.length - 1; i >= 0; i--) {
+                const car = cars[i];
+                car.position.z += speed * delta;
+                
+                // Remove cars that are behind
+                if (car.position.z > 10) {
+                    scene.remove(car);
+                    cars.splice(i, 1);
+                    continue;
+                }
+                
+                // Collision detection
+                const distance = Math.sqrt(
+                    Math.pow(car.position.x - playerCar.position.x, 2) + 
+                    Math.pow(car.position.z - playerCar.position.z, 2)
+                );
+                
+                if (distance < 1.5 && gameActive) {
+                    gameActive = false;
+                    alert(`Game Over! Your score: ${Math.floor(score)}`);
+                }
+            }
+            
+            // Loop road
+            if (road.position.z > 4) {
+                road.position.z -= 100;
+            }
+            
+            // Update score
+            score += delta * speed / 10;
+            document.getElementById('speed').textContent = Math.floor(speed);
+            document.getElementById('score').textContent = Math.floor(score);
+        }
+
+        function animate(t) {
+            if (!gameActive) return;
+            
+            requestAnimationFrame(animate);
+            const delta = Math.min(0.05, (performance.now() - t) / 1000);
+            
+            updatePlayer(delta);
+            
+            // Update camera
+            camera.position.x = playerCar.position.x;
+            camera.position.z = playerCar.position.z + 5;
+            camera.lookAt(playerCar.position);
+            
+            renderer.render(scene, camera);
+            
+            // Randomly spawn cars
+            if (Math.random() < 0.02) spawnCar();
+        }
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // Start game
+        animate(performance.now());
+    </script>
+</body>
+</html>
