@@ -10,8 +10,7 @@
             margin: 0;
             padding: 0;
             overflow: hidden;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #000;
+            font-family: 'Arial', sans-serif;
             color: white;
         }
 
@@ -22,11 +21,9 @@
         /* ========== HUD STYLES ========== */
         #hud-container {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            padding: 20px;
-            box-sizing: border-box;
+            top: 20px;
+            left: 20px;
+            right: 20px;
             display: flex;
             justify-content: space-between;
             z-index: 100;
@@ -34,12 +31,13 @@
         }
 
         .hud-panel {
-            background-color: rgba(0, 0, 0, 0.7);
+            background-color: rgba(0, 0, 0, 0.6);
             border-radius: 10px;
             padding: 15px;
-            min-width: 200px;
+            min-width: 180px;
             backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
         }
 
         .hud-title {
@@ -51,20 +49,12 @@
         .hud-value {
             font-size: 24px;
             font-weight: bold;
-            color: #fff;
         }
 
-        #speed-value {
-            color: #4CAF50;
-        }
-
-        #score-value {
-            color: #FFC107;
-        }
-
-        #time-value {
-            color: #03A9F4;
-        }
+        #speed-value { color: #4CAF50; }
+        #score-value { color: #FFC107; }
+        #time-value { color: #03A9F4; }
+        #gear-value { color: #F44336; }
 
         /* ========== MENU STYLES ========== */
         #menu-container {
@@ -79,6 +69,7 @@
             align-items: center;
             background-color: rgba(0, 0, 0, 0.8);
             z-index: 200;
+            transition: opacity 0.3s ease;
         }
 
         #menu-title {
@@ -86,6 +77,8 @@
             margin-bottom: 40px;
             color: #FFC107;
             text-shadow: 0 0 10px rgba(255, 193, 7, 0.5);
+            font-family: 'Impact', sans-serif;
+            letter-spacing: 2px;
         }
 
         .menu-button {
@@ -97,7 +90,7 @@
             border-radius: 50px;
             margin: 10px;
             cursor: pointer;
-            min-width: 200px;
+            min-width: 250px;
             text-align: center;
             font-weight: bold;
             transition: all 0.3s ease;
@@ -129,6 +122,7 @@
             color: #F44336;
             margin-bottom: 20px;
             text-shadow: 0 0 10px rgba(244, 67, 54, 0.5);
+            font-family: 'Impact', sans-serif;
         }
 
         #game-over-stats {
@@ -138,6 +132,7 @@
             margin-bottom: 30px;
             text-align: center;
             min-width: 300px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
         }
 
         .game-over-stat {
@@ -148,32 +143,6 @@
         .stat-value {
             font-weight: bold;
             color: #FFC107;
-        }
-
-        /* ========== POWER-UP INDICATORS ========== */
-        #powerup-container {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 10px;
-            z-index: 100;
-        }
-
-        .powerup-slot {
-            width: 50px;
-            height: 50px;
-            background-color: rgba(0, 0, 0, 0.5);
-            border-radius: 10px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .powerup-icon {
-            font-size: 24px;
         }
 
         /* ========== MESSAGE POPUPS ========== */
@@ -189,6 +158,8 @@
             opacity: 0;
             transition: opacity 0.3s ease;
             pointer-events: none;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         #message-text {
@@ -196,11 +167,74 @@
             color: white;
             text-align: center;
         }
+
+        /* ========== MINIMAP STYLES ========== */
+        #minimap-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 150px;
+            height: 150px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            overflow: hidden;
+            z-index: 100;
+        }
+
+        #minimap {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* ========== LOADING SCREEN ========== */
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 500;
+        }
+
+        #loading-bar-container {
+            width: 300px;
+            height: 20px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+
+        #loading-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #FFC107, #FF9800);
+            transition: width 0.3s ease;
+        }
+
+        #loading-text {
+            margin-top: 15px;
+            font-size: 16px;
+            color: #aaa;
+        }
     </style>
 </head>
 <body>
-    <!-- Main Game Canvas (automatically added by Three.js) -->
-    
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <h1>LOADING GAME...</h1>
+        <div id="loading-bar-container">
+            <div id="loading-bar"></div>
+        </div>
+        <div id="loading-text">Initializing 3D engine...</div>
+    </div>
+
     <!-- HUD Elements -->
     <div id="hud-container">
         <div class="hud-panel">
@@ -215,13 +249,15 @@
             <div class="hud-title">TIME</div>
             <div id="time-value" class="hud-value">0:00</div>
         </div>
+        <div class="hud-panel">
+            <div class="hud-title">GEAR</div>
+            <div id="gear-value" class="hud-value">N</div>
+        </div>
     </div>
 
-    <!-- Power-up Indicators -->
-    <div id="powerup-container">
-        <div class="powerup-slot" id="powerup-slot-1"></div>
-        <div class="powerup-slot" id="powerup-slot-2"></div>
-        <div class="powerup-slot" id="powerup-slot-3"></div>
+    <!-- Minimap -->
+    <div id="minimap-container">
+        <canvas id="minimap"></canvas>
     </div>
 
     <!-- Message Popup -->
@@ -231,7 +267,7 @@
 
     <!-- Main Menu -->
     <div id="menu-container">
-        <h1 id="menu-title">ULTIMATE DRIVER</h1>
+        <h1 id="menu-title">DRIVING SIMULATOR</h1>
         <button class="menu-button" id="start-button">START GAME</button>
         <button class="menu-button" id="controls-button">CONTROLS</button>
         <button class="menu-button" id="about-button">ABOUT</button>
@@ -253,13 +289,14 @@
     <!-- Three.js and Game Code -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.min.js"></script>
     <script>
         // =============================================
         // ========== GAME INITIALIZATION ==========
         // =============================================
 
         // Main Three.js variables
-        let scene, camera, renderer, controls;
+        let scene, camera, renderer, controls, minimapCamera, minimapRenderer;
         
         // Game state variables
         let gameActive = false;
@@ -268,17 +305,20 @@
         let gameScore = 0;
         let carsPassed = 0;
         let topSpeed = 0;
+        let loadingProgress = 0;
+        let assetsLoaded = false;
         
         // Player variables
         let playerCar, playerSpeed = 0, playerAcceleration = 0;
         let playerPosition = { x: 0, y: 0, z: 0 };
-        let playerPowerups = [];
-        let invincible = false;
+        let currentGear = 'N';
+        let gearShiftTimer = 0;
         
         // Environment variables
         let road, roadSegments = [];
-        let dayNightCycle = 0; // 0-1 range (0=day, 1=night)
-        let weather = 0; // 0-1 range (0=clear, 1=rainy)
+        let dayNightCycle = 0.25; // Start at morning
+        let weather = 0; // 0=clear, 1=rainy
+        let sunLight, ambientLight, fog;
         
         // Traffic variables
         let trafficCars = [];
@@ -300,13 +340,14 @@
         // Game settings
         const settings = {
             mouseSensitivity: 0.002,
-            maxSpeed: 200, // mph
+            maxSpeed: 180, // mph
             acceleration: 0.5,
             braking: 1.2,
             steering: 0.05,
             roadWidth: 20,
-            segmentLength: 100,
-            segmentCount: 3
+            segmentLength: 200,
+            segmentCount: 3,
+            gearShiftSpeed: 30 // mph
         };
 
         // =============================================
@@ -314,19 +355,44 @@
         // =============================================
 
         function init() {
-            createScene();
-            createPlayer();
-            createEnvironment();
-            createEventListeners();
-            setupUI();
+            // Setup loading progress
+            updateLoadingProgress(0, "Initializing 3D engine...");
             
-            // Start the game in menu state
-            showMenu();
+            // Create Three.js scene
+            createScene();
+            updateLoadingProgress(10, "Creating environment...");
+            
+            // Create player and environment
+            createPlayer();
+            updateLoadingProgress(30, "Building road system...");
+            
+            createEnvironment();
+            updateLoadingProgress(50, "Setting up lighting...");
+            
+            // Setup UI and event listeners
+            createEventListeners();
+            updateLoadingProgress(70, "Initializing controls...");
+            
+            setupUI();
+            updateLoadingProgress(90, "Finalizing setup...");
+            
+            // Complete loading
+            setTimeout(() => {
+                assetsLoaded = true;
+                document.getElementById('loading-screen').style.opacity = 0;
+                setTimeout(() => {
+                    document.getElementById('loading-screen').style.display = 'none';
+                    showMenu();
+                }, 300);
+                updateLoadingProgress(100, "Ready to play!");
+            }, 1500);
         }
 
         function createScene() {
-            // Create Three.js scene
+            // Create Three.js scene with fog
             scene = new THREE.Scene();
+            fog = new THREE.FogExp2(0x87CEEB, 0.0005);
+            scene.fog = fog;
             
             // Setup renderer with antialiasing and shadows
             renderer = new THREE.WebGLRenderer({ 
@@ -338,12 +404,24 @@
             renderer.shadowMap.type = THREE.PCFSoftShadowMap;
             renderer.physicallyCorrectLights = true;
             renderer.toneMapping = THREE.ACESFilmicToneMapping;
-            renderer.toneMappingExposure = 1;
+            renderer.toneMappingExposure = 1.5;
             document.body.appendChild(renderer.domElement);
             
-            // Create camera
+            // Create main camera
             camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 5000);
             camera.position.set(0, 5, 10);
+            
+            // Create minimap camera and renderer
+            minimapCamera = new THREE.OrthographicCamera(-50, 50, 50, -50, 1, 1000);
+            minimapCamera.position.set(0, 100, 0);
+            minimapCamera.lookAt(0, 0, 0);
+            
+            minimapRenderer = new THREE.WebGLRenderer({ 
+                canvas: document.getElementById('minimap'),
+                antialias: true
+            });
+            minimapRenderer.setSize(150, 150);
+            minimapRenderer.setClearColor(0x333333);
             
             // Orbit controls for debugging (disabled in game)
             controls = new THREE.OrbitControls(camera, renderer.domElement);
@@ -402,6 +480,39 @@
                 wheel.castShadow = true;
                 playerCar.add(wheel);
             });
+            
+            // Headlights
+            const headlight1 = new THREE.SpotLight(0xFFFFFF, 2, 100, Math.PI/6, 0.5);
+            headlight1.position.set(-0.5, 0.3, -2);
+            headlight1.target.position.set(-0.5, 0, -10);
+            headlight1.castShadow = true;
+            headlight1.shadow.bias = -0.001;
+            playerCar.add(headlight1);
+            playerCar.add(headlight1.target);
+            
+            const headlight2 = new THREE.SpotLight(0xFFFFFF, 2, 100, Math.PI/6, 0.5);
+            headlight2.position.set(0.5, 0.3, -2);
+            headlight2.target.position.set(0.5, 0, -10);
+            headlight2.castShadow = true;
+            headlight2.shadow.bias = -0.001;
+            playerCar.add(headlight2);
+            playerCar.add(headlight2.target);
+            
+            // Brake lights
+            const brakeLightGeometry = new THREE.BoxGeometry(0.2, 0.2, 0.1);
+            const brakeLightMaterial = new THREE.MeshStandardMaterial({ 
+                color: 0xFF0000,
+                emissive: 0xFF0000,
+                emissiveIntensity: 0
+            });
+            
+            const brakeLight1 = new THREE.Mesh(brakeLightGeometry, brakeLightMaterial);
+            brakeLight1.position.set(-0.6, 0.2, -2);
+            playerCar.add(brakeLight1);
+            
+            const brakeLight2 = new THREE.Mesh(brakeLightGeometry, brakeLightMaterial);
+            brakeLight2.position.set(0.6, 0.2, -2);
+            playerCar.add(brakeLight2);
         }
 
         function createEnvironment() {
@@ -419,9 +530,6 @@
             ground.position.y = -0.1;
             ground.receiveShadow = true;
             scene.add(ground);
-            
-            // Sky
-            scene.background = new THREE.Color(0x87CEEB);
             
             // Lighting
             createLighting();
@@ -465,11 +573,13 @@
 
         function createLighting() {
             // Ambient light
-            const ambientLight = new THREE.AmbientLight(0x404040, 0.5);
+            ambientLight = new THREE.AmbientLight(0x404040, 0.5);
+            ambientLight.name = 'ambientLight';
             scene.add(ambientLight);
             
             // Directional light (sun)
-            const sunLight = new THREE.DirectionalLight(0xFFFFFF, 1.0);
+            sunLight = new THREE.DirectionalLight(0xFFFFFF, 1.0);
+            sunLight.name = 'sunLight';
             sunLight.position.set(100, 100, 50);
             sunLight.castShadow = true;
             sunLight.shadow.mapSize.width = 2048;
@@ -482,23 +592,8 @@
             sunLight.shadow.camera.bottom = -50;
             scene.add(sunLight);
             
-            // Car headlights
-            const headlight1 = new THREE.SpotLight(0xFFFFFF, 1, 100, Math.PI/6, 0.5);
-            headlight1.position.set(-0.5, 0.3, -2);
-            headlight1.target.position.set(-0.5, 0, -10);
-            headlight1.castShadow = true;
-            playerCar.add(headlight1);
-            playerCar.add(headlight1.target);
-            
-            const headlight2 = new THREE.SpotLight(0xFFFFFF, 1, 100, Math.PI/6, 0.5);
-            headlight2.position.set(0.5, 0.3, -2);
-            headlight2.target.position.set(0.5, 0, -10);
-            headlight2.castShadow = true;
-            playerCar.add(headlight2);
-            playerCar.add(headlight2.target);
-            
-            // Fog
-            scene.fog = new THREE.FogExp2(0x87CEEB, 0.001);
+            // Update lighting based on initial day cycle
+            updateLighting();
         }
 
         function createScenery() {
@@ -583,6 +678,7 @@
                 updateEnvironment(deltaTime);
                 updateCamera(deltaTime);
                 updateHUD();
+                updateMinimap();
                 
                 // Check for collisions
                 checkCollisions();
@@ -619,6 +715,9 @@
             playerSpeed += playerAcceleration * deltaTime * 20;
             playerSpeed = Math.max(0, Math.min(playerSpeed, settings.maxSpeed));
             
+            // Update gear
+            updateGear(deltaTime);
+            
             // Steering
             if (keys.a || keys.arrowleft) {
                 playerPosition.x -= settings.steering * (0.5 + playerSpeed/settings.maxSpeed) * deltaTime * 50;
@@ -641,6 +740,63 @@
             if (playerSpeed > topSpeed) {
                 topSpeed = playerSpeed;
             }
+            
+            // Animate wheels
+            const wheels = playerCar.children.filter(child => child.geometry instanceof THREE.CylinderGeometry);
+            wheels.forEach(wheel => {
+                wheel.rotation.x -= playerSpeed * deltaTime * 0.02;
+            });
+            
+            // Update brake lights
+            const brakeLights = playerCar.children.filter(child => 
+                child.material && child.material.emissiveIntensity !== undefined
+            );
+            brakeLights.forEach(light => {
+                light.material.emissiveIntensity = playerAcceleration < -0.5 ? 1 : 0;
+            });
+        }
+
+        function updateGear(deltaTime) {
+            if (gearShiftTimer > 0) {
+                gearShiftTimer -= deltaTime;
+                return;
+            }
+            
+            const mph = playerSpeed * 2.23694;
+            
+            if (mph < 10) {
+                if (currentGear !== 'N') {
+                    currentGear = 'N';
+                    gearShiftTimer = 0.5;
+                }
+            } else if (mph < settings.gearShiftSpeed) {
+                if (currentGear !== '1') {
+                    currentGear = '1';
+                    gearShiftTimer = 0.5;
+                }
+            } else if (mph < settings.gearShiftSpeed * 2) {
+                if (currentGear !== '2') {
+                    currentGear = '2';
+                    gearShiftTimer = 0.5;
+                }
+            } else if (mph < settings.gearShiftSpeed * 3) {
+                if (currentGear !== '3') {
+                    currentGear = '3';
+                    gearShiftTimer = 0.5;
+                }
+            } else if (mph < settings.gearShiftSpeed * 4) {
+                if (currentGear !== '4') {
+                    currentGear = '4';
+                    gearShiftTimer = 0.5;
+                }
+            } else {
+                if (currentGear !== '5') {
+                    currentGear = '5';
+                    gearShiftTimer = 0.5;
+                }
+            }
+            
+            document.getElementById('gear-value').textContent = currentGear;
         }
 
         function updateTraffic(deltaTime) {
@@ -687,24 +843,21 @@
         function updateLighting() {
             // Update sun position based on day/night cycle
             const sunAngle = dayNightCycle * Math.PI * 2;
-            const sun = scene.getObjectByName('sunLight');
             
-            if (sun) {
-                sun.position.x = Math.cos(sunAngle) * 100;
-                sun.position.y = Math.sin(sunAngle) * 100;
-                sun.intensity = sun.position.y > 0 ? 1.0 : 0.1;
-                
-                // Update ambient light based on time of day
-                const ambient = scene.getObjectByName('ambientLight');
-                ambient.intensity = 0.3 + 0.2 * Math.sin(sunAngle);
-                
-                // Update fog
-                scene.fog.color.setHSL(
-                    0.6, 
-                    0.5, 
-                    0.5 + 0.3 * Math.sin(sunAngle)
-                );
-            }
+            sunLight.position.x = Math.cos(sunAngle) * 100;
+            sunLight.position.y = Math.max(0, Math.sin(sunAngle)) * 100;
+            sunLight.intensity = sunLight.position.y > 0 ? 1.0 : 0.1;
+            
+            // Update ambient light based on time of day
+            ambientLight.intensity = 0.3 + 0.2 * Math.sin(sunAngle);
+            
+            // Update fog
+            const fogIntensity = 0.5 + 0.3 * Math.sin(sunAngle);
+            fog.color.setHSL(0.6, 0.5, fogIntensity);
+            fog.density = 0.0003 + (1 - fogIntensity) * 0.0002;
+            
+            // Update renderer exposure
+            renderer.toneMappingExposure = 1.0 + Math.sin(sunAngle) * 0.5;
         }
 
         function updateCamera(deltaTime) {
@@ -785,6 +938,19 @@
                 `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
         }
 
+        function updateMinimap() {
+            // Update minimap camera position
+            minimapCamera.position.set(
+                playerCar.position.x,
+                100,
+                playerCar.position.z
+            );
+            minimapCamera.lookAt(playerCar.position);
+            
+            // Render minimap
+            minimapRenderer.render(scene, minimapCamera);
+        }
+
         function spawnTraffic(deltaTime) {
             // Spawn new traffic based on density and player speed
             const spawnChance = trafficDensity * (0.01 + playerSpeed / settings.maxSpeed * 0.05);
@@ -828,8 +994,6 @@
         }
 
         function checkCollisions() {
-            if (invincible) return;
-            
             for (const car of trafficCars) {
                 const distance = Math.sqrt(
                     Math.pow(car.position.x - playerCar.position.x, 2) +
@@ -915,6 +1079,7 @@
             playerSpeed = 0;
             playerAcceleration = 0;
             playerPosition = { x: 0, y: 0, z: 0 };
+            currentGear = 'N';
             
             // Reset game stats
             gameTime = 0;
@@ -931,6 +1096,10 @@
             currentCameraMode = 'chase';
             camera.position.set(0, 5, 10);
             camera.lookAt(0, 0, 0);
+            
+            // Reset day/night cycle
+            dayNightCycle = 0.25;
+            updateLighting();
         }
 
         function switchCamera() {
@@ -947,7 +1116,7 @@
 
         function showMenu() {
             document.getElementById('menu-container').style.display = 'flex';
-            document.getElementById('menu-title').textContent = 'ULTIMATE DRIVER';
+            document.getElementById('menu-title').textContent = 'DRIVING SIMULATOR';
         }
 
         function showControls() {
@@ -989,6 +1158,12 @@
             setTimeout(() => {
                 message.style.opacity = 0;
             }, duration);
+        }
+
+        function updateLoadingProgress(percent, text) {
+            loadingProgress = percent;
+            document.getElementById('loading-bar').style.width = `${percent}%`;
+            document.getElementById('loading-text').textContent = text;
         }
 
         // =============================================
